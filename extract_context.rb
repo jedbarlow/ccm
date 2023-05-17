@@ -45,7 +45,7 @@ class ContextExtractor
 
   def self.generate_snippet(content)
     GPT4.new.complete(<<~PROMPT)
-    Create a very concise snippet version of the following file showing only the key content marked by IMPORTANT CONTEXT surrounded by collapsed code with ellipses and a few key lines to show the basic outline of the file by indentation level. Output just the code, no explanations.
+    Create a concise snippet version of the following file showing only the key content marked by IMPORTANT CONTEXT surrounded by collapsed code with ellipses and a few key lines to show the basic outline of the file by indentation level. Output just the code, no explanations.
 
     File:
     ```
