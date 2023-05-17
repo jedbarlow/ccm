@@ -1,0 +1,38 @@
+#! /bin/bash
+
+# Get first command line argument
+COMMAND="$1"
+DIR_OF_SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+FILES=$(bash "$DIR_OF_SCRIPT/list_context_files.sh")
+
+case "$COMMAND" in
+  ""|"l") # list
+    echo "$FILES"
+    ;;
+  # "o") # open
+  #   echo "$FILES" | fzf | xargs -I {} vim {}
+  #   ;;
+  "c"|"cc") # context
+    SNIPPETS=$(echo "$FILES" | xargs ruby "$DIR_OF_SCRIPT/extract_context.rb")
+
+    OUTPUT=$(
+      echo "Given the following code snippets from a Rails project using hotwire and stimulus, suggest changes to accomplish the following task in a well structured and high quality manner. Paying attention to the context marked IMPORTANT CONTEXT. Output only a very brief explanation and the relevant code snippets. Don't output the entire files, just the relevant code snippets."
+      echo
+      echo "Task: $2"
+      echo
+      echo "Files:"
+      echo "$SNIPPETS"
+    )
+
+    if [ "$COMMAND" = "cc" ]; then
+      echo "$OUTPUT" | pbcopy
+      echo "Output copied to clipboard"
+    else
+      echo "$OUTPUT"
+    fi
+    ;;
+  *)
+    echo "Unknown command: $COMMAND"
+    ;;
+esac
