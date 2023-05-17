@@ -30,6 +30,11 @@ TODO
 TODO
 
 ## Development notes
-- Initially I tried just using comments to simply identify which files from the project were
-  relevant, but dumping entire files into the prompt quickly exceeded the input size limit. To solve
-  this, I moved to identifying the relevant context within files for more concise prompts.
+- 2023-05-15: The GPT4 prompt seems to be slow (taking 5-15 seconds or so per call), so as a
+  performance optimization I added caching of snippets keyed by a hash of the file content. The file
+  content includes the context marker comment itself, so any channges to the file including the
+  marker will result in a new, concise snippet version of the file being cached and used in the
+  prompts.
+- 2023-05-15: Initially I tried just using comments to simply identify which files from the project
+  were relevant, but dumping entire files into the prompt quickly exceeded the input size limit. To
+  solve this, I moved to identifying the relevant context within files for more concise prompts.
