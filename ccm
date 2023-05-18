@@ -8,7 +8,11 @@ FILES=$(bash "$DIR_OF_SCRIPT/list_context_files.sh")
 
 case "$COMMAND" in
   ""|"l") # list
-    echo "$FILES"
+    if [ -z "$FILES" ]; then
+      echo "No context files found."
+    else
+      echo "$FILES"
+    fi
     ;;
   # "o") # open
   #   echo "$FILES" | fzf | xargs -I {} vim {}
