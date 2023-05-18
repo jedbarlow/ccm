@@ -5,4 +5,5 @@ grep "IMPORTANT CONTEXT" \
   --exclude-dir storage \
   --exclude-dir node_modules \
   --exclude-dir .context \
-  -lr .
+  -lr . \
+  | sort
