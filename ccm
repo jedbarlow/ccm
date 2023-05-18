@@ -21,7 +21,7 @@ case "$COMMAND" in
     SNIPPETS=$(echo "$FILES" | xargs ruby "$DIR_OF_SCRIPT/extract_context.rb")
 
     OUTPUT=$(
-      echo "Given the following code snippets from a Rails project using hotwire and stimulus, suggest changes to accomplish the following task in a well structured and high quality manner. Paying attention to the context marked IMPORTANT CONTEXT. Output only a very brief explanation and the relevant code snippets. Don't output the entire files, just the relevant code snippets."
+      echo "Given the following code snippets from a ${CCM_PROJECT_DESCRIPTION}, suggest changes to accomplish the following task in a well structured and high quality manner. Paying attention to the context marked IMPORTANT CONTEXT. Output only a very brief explanation and the relevant code snippets. Don't output the entire files, just the relevant code snippets."
       echo
       echo "Task: $2"
       echo
