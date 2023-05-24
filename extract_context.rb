@@ -4,7 +4,9 @@ class Runner
   def self.run(files)
     snippets = []
     files.each do |file|
-      snippets << [file, ContextExtractor.snippet_content_for_file(file)]
+      if File.exists?(file)
+        snippets << [file, ContextExtractor.snippet_content_for_file(file)]
+      end
     end
 
     output = snippets.map { |(file, snippet)| SnippetFormatter.format(file, snippet) }.join("\n\n")
@@ -13,39 +15,20 @@ class Runner
 end
 
 class ContextExtractor
+  CONTEXT_MARKER = "IMPORTANT CONTEXT"
+
   DIR_OF_THIS_FILE = File.dirname(File.expand_path(__FILE__))
   CACHE_DIR=File.join(DIR_OF_THIS_FILE, "cache", "snippets")
 
-  def self.cache_file_for_hash(hash)
-    File.join(CACHE_DIR, hash)
-  end
+  def self.snippet_content_for_file(file)
+    content = file_contents(file)
 
-  def self.hash(content)
-    Digest::SHA256.hexdigest(content)
-  end
+    if content =~ /.*#{CONTEXT_MARKER}: file\W*$/
+      return content
+    end
 
-  def self.file_contents(file)
-    IO.read(file)
-  end
-
-  def self.cached_snippet(hash)
-    cache_file = cache_file_for_hash(hash)
-    File.exists?(cache_file) ? file_contents(cache_file) : nil
-  end
-
-  def self.populate_cache(content)
-    hash = self.hash(content)
-    cache_file = cache_file_for_hash(hash)
-    snippet = self.generate_snippet(content)
-
-    IO.write(cache_file, snippet)
-
-    snippet
-  end
-
-  def self.generate_snippet(content)
-    GPT4.new.complete(<<~PROMPT)
-    Create a concise snippet version of the following file showing only the key content marked by IMPORTANT CONTEXT surrounded by collapsed code with ellipses and a few key lines to show the basic outline of the file by indentation level. Output just the code, no explanations.
+    GPT4.new.complete(<<~PROMPT, meta_data_file: file)
+    Create a snippet version of the following file showing the key content marked by #{CONTEXT_MARKER} (respecting any additional context instructions) surrounded by collapsed code with ellipses and a few key lines to show the basic outline of the file by indentation level. Respond with just the code, no explanations.
 
     File:
     ```
@@ -54,19 +37,8 @@ class ContextExtractor
     PROMPT
   end
 
-  def self.snippet_content_for_file(file)
-    content = file_contents(file)
-    hash = hash(content)
-
-    cache = cached_snippet(hash)
-
-    if cache
-      STDERR.puts "#{ColourHelper.light_green("cache hit")} for #{file}"
-      cache
-    else
-      STDERR.puts "#{ColourHelper.light_red("cache miss")} for #{file}"
-      populate_cache(content)
-    end
+  def self.file_contents(file)
+    IO.read(file)
   end
 end
 
