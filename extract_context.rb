@@ -26,7 +26,7 @@ class ContextExtractor
     content = file_contents(file)
 
     if content =~ /.*#{CONTEXT_MARKER}: file\W*$/
-      return content
+      return "```\n#{content}\n```"
     end
 
     GPT4.new.complete(<<~PROMPT, meta_data_file: file)
@@ -46,7 +46,7 @@ end
 
 class SnippetFormatter
   def self.format(file_name, snippet)
-    "#{file_name}\n" + "#{snippet}\n"
+    "#{file_name}\n#{snippet}\n"
   end
 end
 
