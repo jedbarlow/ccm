@@ -6,6 +6,8 @@ class Runner
     files.each do |file|
       if File.exists?(file)
         snippets << [file, ContextExtractor.snippet_content_for_file(file)]
+      else
+        STDERR.puts "Context file not found: #{file}"
       end
     end
 
