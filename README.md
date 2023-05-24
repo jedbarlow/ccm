@@ -59,6 +59,7 @@ It's best to manage the environment variables per project. `direnv` is a good so
   - None
   - Marked
   - Auto
+
   None would be for example just to use the current selection or file as input for a code change.
   Marked is to use the manual context markers from within the project code. Auto would be to
   automatically select the context files using GPT based on a given task. There could possibly be a
@@ -68,8 +69,9 @@ It's best to manage the environment variables per project. `direnv` is a good so
   The two modes are
   - In-editor selection replacement
   - Out-of-editor chat prompting
+
   The selection replacement option is best run with editor commands to operate on the current
-  selection and allow a code change / task description to be entered, and then replaces the current
+  selection and allow a code change / task description to be entered and then replace the current
   selection with the output. I'm using a custom nvim command for this right now. I can see this
   feature needs to be parameterized with a context specification, e.g. None, Marked, Auto, or a
   combination. The chat prompting is when you want to make a bigger change involving multiple files,
