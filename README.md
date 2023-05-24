@@ -52,6 +52,32 @@ necessary information for the model to suggest a high quality and precise code c
 It's best to manage the environment variables per project. `direnv` is a good solution for this.
 
 ## Development notes
+- 2023-05-24: I'm finding a few pattern emerging as I try out ccm. There seem to be three basic
+  kinds of context and two modes of usage.
+
+  The contexts are the following.
+  - None
+  - Marked
+  - Auto
+  None would be for example just to use the current selection or file as input for a code change.
+  Marked is to use the manual context markers from within the project code. Auto would be to
+  automatically select the context files using GPT based on a given task. There could possibly be a
+  combination of these, for example using both the context markers and auto context, but I'm not
+  sure about the need for that yet.
+
+  The two modes are
+  - In-editor selection replacement
+  - Out-of-editor chat prompting
+  The selection replacement option is best run with editor commands to operate on the current
+  selection and allow a code change / task description to be entered, and then replaces the current
+  selection with the output. I'm using a custom nvim command for this right now. I can see this
+  feature needs to be parameterized with a context specification, e.g. None, Marked, Auto, or a
+  combination. The chat prompting is when you want to make a bigger change involving multiple files,
+  or to generate a new file. The workflow in this case is to copy a generated prompt into a GPT4
+  chat session, and then copy and paste the snippets back into your code. It's a bit cumbersome, but
+  the prompt generation with context management helps a lot. One advantage with using an
+  out-of-editor chat session for this is that you can conversationally work with the code snippets
+  before bringing them back into your project.
 - 2023-05-15: The GPT4 api seems to be slow (taking 30+ seconds or so per call), so as a performance
   optimization I added caching of snippets keyed by a hash of the file content. The file content
   includes the context marker comment itself, so any channges to the file including the marker will
