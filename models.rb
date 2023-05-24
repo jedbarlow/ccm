@@ -22,14 +22,18 @@ class OpenAIModel
     @cache = SnippetCache.new
   end
 
-  def complete(prompt, meta_data_file: nil)
+  def complete(prompt, meta_data_file: nil, quiet: false)
     cache = @cache.get(prompt)
 
     if cache
-      STDERR.puts "#{ColourHelper.light_green("cache hit")} for #{meta_data_file || Utils.truncate(prompt.lines.first, length: 80)}"
+      unless quiet
+        STDERR.puts "#{ColourHelper.light_green("cache hit")} for #{meta_data_file || Utils.truncate(prompt.lines.first, length: 80)}"
+      end
       cache
     else
-      STDERR.puts "#{ColourHelper.light_red("cache miss")} for #{meta_data_file || Utils.truncate(prompt.lines.first, length: 80)}"
+      unless quiet
+        STDERR.puts "#{ColourHelper.light_red("cache miss")} for #{meta_data_file || Utils.truncate(prompt.lines.first, length: 80)}"
+      end
       @cache.put(
         original: prompt,
         mapped: complete_with_model(prompt)

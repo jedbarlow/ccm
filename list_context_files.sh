@@ -19,4 +19,5 @@ grep "$CONTEXT_MARKER" \
   $EXCLUDE_FILES \
   $OPTIONS \
   -r . \
-  | sort
+  | sort \
+  | sed "s/^\.\///g"
