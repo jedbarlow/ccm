@@ -15,8 +15,6 @@ def main
     #{available_context_files.map { |f| "`#{f}`" }.join("\n")}
   PROMPT
 
-  STDERR.puts prompt
-
   result = GPT4.new.complete(prompt)
 
   context_files = Utils.extract_file_names(result)
