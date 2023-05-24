@@ -17,7 +17,7 @@ class Runner
 end
 
 class ContextExtractor
-  CONTEXT_MARKER = "IMPORTANT CONTEXT"
+  CONTEXT_MARKER = ENV.fetch("CCM_CONTEXT_MARKER", "IMPORTANT CONTEXT")
 
   DIR_OF_THIS_FILE = File.dirname(File.expand_path(__FILE__))
   CACHE_DIR=File.join(DIR_OF_THIS_FILE, "cache", "snippets")
