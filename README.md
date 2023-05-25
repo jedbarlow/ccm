@@ -10,9 +10,9 @@ AI's GPT3.5 and GPT4 models, but the models still have a limited input size for 
 struggle to suggest fully contextualized code changes without carefully crafted input.
 
 For example if you have a large Rails project, you can't simply dump all the files into a prompt and
-ask the model to suggest the change you want, as this will exceed the input size limit. Ultimately
-as the models improve this kind of low-effort prompting is likely to form the basis for how coding
-is done. However in the meantime, the models can be used highly effectively with the relevant code
+ask the model to suggest the change you want as this will exceed the input size limit. Ultimately as
+the models improve this kind of low-effort prompting is likely to form the basis for how coding is
+done. However in the meantime, the models can be used highly effectively with the relevant code
 snippets manually identified within a larger project or automatically identified with a multi-step
 use of the models. That's where this tool comes in, ccm.
 
@@ -104,8 +104,6 @@ export CCM_PROJECT_DESCRIPTION="PROJECT DESCRIPTION"
   command! -nargs=1 -range=% M3ma <line1>,<line2>!ccm modify ma --model=gpt3 --stdin --quiet <args>
   command! -nargs=1 -range=% M3a  <line1>,<line2>!ccm modify a  --model=gpt3 --stdin --quiet <args>
   ```
-
-It's best to manage the environment variables per project. `direnv` is a good solution for this.
 
 ## Development notes
 - 2023-05-25: Noticed that sometimes there are typos in the output from GPT4, for example in one
