@@ -1,4 +1,0 @@
-#! /bin/bash
-
-DIR_OF_THIS_SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ruby "$DIR_OF_THIS_SCRIPT/auto_context.rb" "$@"

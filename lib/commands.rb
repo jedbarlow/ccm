@@ -1,0 +1,6 @@
+#require_relative "commands/auto_select_context_files"
+require_relative "commands/create_file_snippet"
+require_relative "commands/create_file_snippets"
+require_relative "commands/generate_files_context"
+require_relative "commands/generate_generic_task_prompt"
+require_relative "commands/list_context_files"

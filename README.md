@@ -52,6 +52,9 @@ necessary information for the model to suggest a high quality and precise code c
 It's best to manage the environment variables per project. `direnv` is a good solution for this.
 
 ## Development notes
+- 2023-05-25: Noticed that sometimes there are typos in the output from GPT4, for example in one
+  case it generated a method called `iniitalize` instead of `initialize`. Probably such cases will
+  become less frequent over time as OpenAI's models improve.
 - 2023-05-24: I'm finding a few pattern emerging as I try out ccm. There seem to be three basic
   kinds of context and two modes of usage.
 

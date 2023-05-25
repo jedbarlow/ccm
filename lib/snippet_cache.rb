@@ -1,6 +1,6 @@
 class SnippetCache
   DIR_OF_THIS_FILE = File.dirname(File.expand_path(__FILE__))
-  DEFAULT_CACHE_DIR = File.join(DIR_OF_THIS_FILE, "cache", "snippets")
+  DEFAULT_CACHE_DIR = File.join(DIR_OF_THIS_FILE, "..", "cache", "snippets")
 
   def initialize(cache_dir: DEFAULT_CACHE_DIR)
     @cache_dir = cache_dir

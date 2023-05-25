@@ -1,5 +1,6 @@
 require "ruby/openai"
 
+require_relative "colour_helper"
 require_relative "snippet_cache"
 require_relative "utils"
 
@@ -7,12 +8,10 @@ class OpenAIModel
   DIR_OF_THIS_FILE = File.dirname(File.expand_path(__FILE__))
 
   API_KEY_ENV_VAR = "CCM_OPENAI_KEY"
-  DEFAULT_LOG_FILE = "#{DIR_OF_THIS_FILE}/logs/openai_api.log"
+  DEFAULT_LOG_FILE = File.join(DIR_OF_THIS_FILE, "..", "logs", "openai_api.log")
 
   MAX_RETRIES = 3
   DEFAULT_MODEL="davinci"
-
-  CACHE_DIR=File.join(DIR_OF_THIS_FILE, "cache", "snippets")
 
   def initialize(model: nil, access_token: nil, log_file: nil)
     access_token ||= ENV[API_KEY_ENV_VAR]
@@ -23,7 +22,7 @@ class OpenAIModel
   end
 
   def complete(prompt, meta_data_file: nil, quiet: false)
-    cache = @cache.get(prompt)
+    cache = @cache.get(cache_key(prompt))
 
     if cache
       unless quiet
@@ -35,13 +34,17 @@ class OpenAIModel
         STDERR.puts "#{ColourHelper.light_red("cache miss")} for #{meta_data_file || Utils.truncate(prompt.lines.first, length: 80)}"
       end
       @cache.put(
-        original: prompt,
+        original: cache_key(prompt),
         mapped: complete_with_model(prompt)
       )
     end
   end
 
   private
+
+  def cache_key(prompt)
+    @model + prompt
+  end
 
   def complete_with_model(prompt)
     MAX_RETRIES.times do
@@ -80,23 +83,5 @@ end
 class GPT35 < OpenAIModel
   def initialize(access_token: nil, log_file: nil)
     super(model: "gpt-3.5-turbo", access_token: access_token, log_file: log_file)
-  end
-end
-
-class ColourHelper
-  def self.green(text)
-    "\e[32m#{text}\e[0m"
-  end
-
-  def self.light_green(text)
-    "\e[92m#{text}\e[0m"
-  end
-
-  def self.red(text)
-    "\e[31m#{text}\e[0m"
-  end
-
-  def self.light_red(text)
-    "\e[91m#{text}\e[0m"
   end
 end
