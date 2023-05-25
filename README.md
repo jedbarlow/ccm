@@ -28,7 +28,7 @@ necessary information for the model to suggest a high quality and precise code c
 
 ## Usage
 
-### Manual context marking
+### Mark context
 You can place context markers throught your code to indicate which code is relevant to a change you
 want to make. A context marker is simply the text `IMPORTANT CONTEXT` placed in a file, usually
 within a code comment and on its own line.
@@ -45,7 +45,7 @@ within a code comment and on its own line.
   lines from files that contain a context marker). This is helpful if you want to quickly set up new
   context markers for a new change.
 
-### Prompt generation
+### Generate a task prompt
 To generate a prompt you can copy and paste into a GPT4 chat session, use the following steps. This
 mode of usage saves you the effort of forming the prompt yourself from the various relevant code
 snippets.
