@@ -11,10 +11,10 @@ struggle to suggest fully contextualized code changes without carefully crafted 
 
 For example if you have a large Rails project, you can't simply dump all the files into a prompt and
 ask the model to suggest the change you want, as this will exceed the input size limit. Ultimately
-as the models improve and as multi-step use of the models develops this kind of low-effort prompting
-is likely to become the standard way of programming. In the meantime however, the models can be used
-highly effectively with the relevant code snippets manually identified within a larger project.
-That's where this tool comes in, ccm.
+as the models improve this kind of low-effort prompting is likely to form the basis for how coding
+is done. However in the meantime, the models can be used highly effectively with the relevant code
+snippets manually identified within a larger project or automatically identified with a multi-step
+use of the models. That's where this tool comes in, ccm.
 
 ## Solution
 
