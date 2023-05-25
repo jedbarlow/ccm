@@ -49,6 +49,31 @@ necessary information for the model to suggest a high quality and precise code c
 - Add a `CCM_PROJECT_DESCRIPTION` environment variable with a technology-focused description of your
   project. E.g. "a rails project using hotwire and stimulus".
 
+If you use `direnv`, then you can add the following snippet to your `.envrc` file in a given
+project (modify appropriately):
+
+```bash
+export PATH="$PATH:$HOME/PATH/TO/CCM"
+export CCM_OPENAI_KEY="..."
+export CCM_PROJECT_DESCRIPTION="ADD YOUR PROJECT DESCRIPTION HERE (MENTION TECHNOLOGIES)"
+#export CCM_IGNORE_DIRS=""
+#export CCM_IGNORE_FILES=""
+#export CCM_CONTEXT_MARKER="CUSTOM CONTEXT MARKER"
+```
+
+### vim/nvim integration
+- Add the following snippet to your vim/nvim init script
+  ```
+  command! -nargs=1 -range=% M    <line1>,<line2>!ccm modify n  --model=gpt4 --stdin --quiet <args>
+  command! -nargs=1 -range=% Mm   <line1>,<line2>!ccm modify m  --model=gpt4 --stdin --quiet <args>
+  command! -nargs=1 -range=% Mma  <line1>,<line2>!ccm modify ma --model=gpt4 --stdin --quiet <args>
+  command! -nargs=1 -range=% Ma   <line1>,<line2>!ccm modify a  --model=gpt4 --stdin --quiet <args>
+  command! -nargs=1 -range=% M3   <line1>,<line2>!ccm modify n  --model=gpt3 --stdin --quiet <args>
+  command! -nargs=1 -range=% M3m  <line1>,<line2>!ccm modify m  --model=gpt3 --stdin --quiet <args>
+  command! -nargs=1 -range=% M3ma <line1>,<line2>!ccm modify ma --model=gpt3 --stdin --quiet <args>
+  command! -nargs=1 -range=% M3a  <line1>,<line2>!ccm modify a  --model=gpt3 --stdin --quiet <args>
+  ```
+
 It's best to manage the environment variables per project. `direnv` is a good solution for this.
 
 ## Development notes
