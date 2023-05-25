@@ -25,7 +25,7 @@ def main
   options = {}
 
   OptionParser.new do |opts|
-    opts.banner = "Usage: ccm [options] COMMAND [CONTEXT TASK [CODE]]"
+    opts.banner = "Usage: ccm [options] [COMMAND [CONTEXT TASK [CODE]]]"
 
     opts.on("-q", "--quiet", "Suppress informational and error messages.") do
       options[:quiet] = true

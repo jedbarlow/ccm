@@ -28,17 +28,48 @@ necessary information for the model to suggest a high quality and precise code c
 
 ## Usage
 
-- Add context markers, (a comment including the verbatim, capitalized text `IMPORTANT CONTEXT`), in
-  places in your code that may be relevant to a change you want to make.
-  - Since GPT4 is used to collapse the file down, it may work to farther specify the context using
-    English, for example `IMPORTANT CONTEXT: full class with method bodies`, though this is still a
-    topic of experimentation.
-- Run the command `ccm` from your project root directory to list the files with context markers.
-- Run the command `ccm c "TASK DESCRIPTION"` from your project root directory to generate a prompt
-  for a code change.
-- Run the command `ccm cc "TASK DESCRIPTION"` to automatically copy the prompt to your clipboard
-  (only works on mac right now, using the `pbcopy` command).
-- Paste the prompt into a GPT4 chat session.
+### Manual context marking
+You can place context markers throught your code to indicate which code is relevant to a change you
+want to make. A context marker is simply the text `IMPORTANT CONTEXT` placed in a file, usually
+within a code comment and on its own line.
+
+- Add context markers in places in your code that may be relevant to a change you want to make.
+  - Since GPT4 is used to collapse the file down into a smaller snippet, it may work to farther
+    specify the context using English, for example `IMPORTANT CONTEXT: full class with method
+    bodies`, though this is still a topic of experimentation.
+  - `IMPORTANT CONTEXT: file` is a special marker that indicates to skip snippetization and just
+    use the whole file. Use this when you know all the details in the file are relevant to a change
+    you want to make.
+- Run the command `ccm` from your project root directory to list current context markers.
+- Run the command `ccm c` from your project root directory to remove all context markers (delete all
+  lines from files that contain a context marker). This is helpful if you want to quickly set up new
+  context markers for a new change.
+
+### Prompt generation
+To generate a prompt you can copy and paste into a GPT4 chat session, use the following steps. This
+mode of usage saves you the effort of forming the prompt yourself from the various relevant code
+snippets.
+
+1. Run the command following commands from your project root directory to generate a code change
+   prompt.
+  - `ccm generate m TASK_DESCRIPTION`: use marked context
+  - `ccm generate a TASK_DESCRIPTION`: use automatic context
+  - `ccm generate ma TASK_DESCRIPTION`: use marked and automatic context
+2. Run the command `ccm gc CONTEXT TASK_DESCRIPTION` to automatically copy the prompt to your
+   clipboard (only works on mac right now, using the `pbcopy` command).
+3. Paste the prompt into a GPT4 chat session.
+
+### Modify code
+To generate code that you can directly copy and paste or pipe into other tools, use the following
+steps. This mode of usage integrates well into editor commands (see the vim/nvim command examples).
+
+1. Run the command following commands from your project root directory to generate a code change
+   prompt.
+  - `ccm modify m --quiet TASK_DESCRIPTION CODE`: use the marked context
+  - `ccm modify a --quiet TASK_DESCRIPTION CODE`: use automatic context
+  - `ccm modify ma --quiet TASK_DESCRIPTION CODE`: use marked and automatic context
+  - Optionally use the `--stdin` option to pipe the code in through standard input rather than as a
+    parameter.
 
 ## Installation
 
@@ -55,7 +86,7 @@ project (modify appropriately):
 ```bash
 export PATH="$PATH:$HOME/PATH/TO/CCM"
 export CCM_OPENAI_KEY="..."
-export CCM_PROJECT_DESCRIPTION="ADD YOUR PROJECT DESCRIPTION HERE (MENTION TECHNOLOGIES)"
+export CCM_PROJECT_DESCRIPTION="PROJECT DESCRIPTION"
 #export CCM_IGNORE_DIRS=""
 #export CCM_IGNORE_FILES=""
 #export CCM_CONTEXT_MARKER="CUSTOM CONTEXT MARKER"
