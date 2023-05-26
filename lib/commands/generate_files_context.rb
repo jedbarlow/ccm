@@ -11,8 +11,7 @@ module Commands
     end
 
     def call
-      snippets = generate_context_snippets
-      format_output(snippets)
+      generate_context_snippets
     end
 
     private
@@ -33,17 +32,6 @@ module Commands
       print_no_context_files_warning if files.empty?
 
       files.sort.uniq
-    end
-
-    def format_output(snippets)
-      <<~OUTPUT
-        Given the following code snippets from a #{ENV["CCM_PROJECT_DESCRIPTION"]}, suggest changes to accomplish the following task in a well structured and high quality manner. Paying attention to the context marked #{CONTEXT_MARKER}. Output only a very brief explanation and the relevant code snippets. Don't output the entire files, just the relevant code snippets.
-
-        Task: #{@task}
-
-        Files:
-        #{snippets}
-      OUTPUT
     end
   end
 end
