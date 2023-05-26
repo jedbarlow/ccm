@@ -18,7 +18,7 @@ module Commands
 
     def generate_context_snippets
       files = collect_context_files
-      CreateFileSnippets.call(files: files, force_full_files: @context_include)
+      CreateFileSnippets.call(files: files, force_full_files: @context_include, quiet: @quiet)
     end
 
     def collect_context_files
@@ -27,7 +27,6 @@ module Commands
       files += ListContextFiles.call if @context_types.include?("m")
       files += AutoSelectContextFiles.call(task: @task, quiet: @quiet) if @context_types.include?("a")
       files += @context_include
-
 
       print_no_context_files_warning if files.empty?
 

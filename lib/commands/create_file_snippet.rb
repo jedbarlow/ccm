@@ -8,11 +8,12 @@ module Commands
     DIR_OF_THIS_FILE = File.dirname(File.expand_path(__FILE__))
     CACHE_DIR = File.join(DIR_OF_THIS_FILE, "cache", "snippets")
 
-    attr_accessor :file, :force_full
+    attr_accessor :file, :force_full, :quiet
 
-    def initialize(file:, force_full: false)
+    def initialize(file:, force_full: false, quiet: false)
       @file = file
       @force_full = force_full
+      @quiet = quiet
     end
 
     def call
@@ -28,7 +29,7 @@ module Commands
         return "```\n#{content}\n```"
       end
 
-      GPT4.new.complete(<<~PROMPT, meta_data_file: file)
+      GPT4.new.complete(<<~PROMPT, meta_data_file: file, quiet: quiet)
         Create a snippet version of the following file showing the key content marked by #{CONTEXT_MARKER} (respecting any additional context instructions) surrounded by collapsed code with ellipses and a few key lines to show the basic outline of the file by indentation level. Respond with just the code, no explanations.
 
         File:
