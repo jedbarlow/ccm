@@ -2,4 +2,4 @@
 
 DIR_OF_THIS_SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-exec ruby "${DIR_OF_THIS_SCRIPT}/lib/ccm.rb" "$@"
+BUNDLE_GEMFILE="$DIR_OF_THIS_SCRIPT/Gemfile" exec bundle exec ruby "${DIR_OF_THIS_SCRIPT}/lib/ccm.rb" "$@"
