@@ -74,6 +74,7 @@ steps. This mode of usage integrates well into editor commands (see the vim/nvim
 ## Installation
 
 - Clone the respository
+- Run `bundle install` from inside the repository directory.
 - Add the path to the repository to your `PATH` environment variable.
 - Add a `CCM_OPENAI_KEY` environment variable with your OpenAI API key (must have access to the GPT4
   models).
