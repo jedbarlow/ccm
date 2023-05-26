@@ -11,12 +11,13 @@ module Commands
     def call
       options = @show_markers ? [] : ["-l"]
 
-      ignore_dirs = [".git", "log", "logs", "tmp", "storage", "node_modules", "vendor", ".context"] + ENV.fetch("CCM_IGNORE_DIRS", "").split
+      ignore_dirs = [".git", "build", "builds", "log", "logs", "tmp", "storage", "node_modules", "vendor", ".context"] + ENV.fetch("CCM_IGNORE_DIRS", "").split
       exclude_dirs = ignore_dirs.map { |dir| "--exclude-dir=#{dir}" }
 
       ignore_files = [".envrc", ".env", "README", "README.md"] + ENV.fetch("CCM_IGNORE_FILES", "").split
       exclude_files = ignore_files.map { |file| "--exclude=\"#{file}\"" }
 
+      # TODO: maybe replace with ripgrep for better speed
       grep_command = [
         "grep",
         "\"#{CONTEXT_MARKER}\"",
