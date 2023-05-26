@@ -6,14 +6,15 @@ require_relative "generate_files_context"
 
 module Commands
   class GenerateGenericTaskPrompt < Command
-    def initialize(context_types:, task:, quiet: false)
+    def initialize(context_types:, task:, context_include: [], quiet: false)
       @context_types = context_types
       @task = task
+      @context_include = context_include
       @quiet = quiet
     end
 
     def call
-      snippets = GenerateFilesContext.call(context_types: @context_types, task: @task, quiet: @quiet)
+      snippets = GenerateFilesContext.call(context_types: @context_types, task: @task, context_include: @context_include, quiet: @quiet)
       format_output(snippets)
     end
 

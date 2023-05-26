@@ -6,8 +6,8 @@ require_relative "utils"
 
 CONTEXT_MARKER = ENV.fetch("CCM_CONTEXT_MARKER", "IMPORTANT CONTEXT")
 
-def generate_context(context_types, task, quiet: false)
-  Commands::GenerateGenericTaskPrompt.call(context_types: context_types, task: task, quiet: quiet)
+def generate_context(context_types, task, context_include: [], quiet: false)
+  Commands::GenerateGenericTaskPrompt.call(context_types: context_types, task: task, context_include: context_include, quiet: quiet)
 end
 
 def select_model(model_name)
@@ -22,7 +22,9 @@ def select_model(model_name)
 end
 
 def main
-  options = {}
+  options = {
+    context_include: []
+  }
 
   OptionParser.new do |opts|
     opts.banner = "Usage: ccm [options] [COMMAND [CONTEXT TASK [CODE]]]"
@@ -37,6 +39,10 @@ def main
 
     opts.on("-mMODEL", "--model=MODEL", "Model preference (3 or 4, for GPT3.5 and GPT4); not all commands support.") do |model|
       options[:model] = model
+    end
+
+    opts.on("-c", "--context-include FILE", "Include file as context (full file)") do |file|
+      options[:context_include] << file
     end
   end.parse!
 
@@ -59,7 +65,7 @@ def main
   when "c", "clear"
     `sed -i "" "/^.*#{CONTEXT_MARKER}.*$/d" #{Commands::ListContextFiles.call.map {|f| "\"#{f}\""}.join(" ")}`
   when "g", "gc", "generate", "generate-copy"
-    output = generate_context(context_types, task, quiet: options[:quiet])
+    output = generate_context(context_types, task, context_include: options[:context_include], quiet: options[:quiet])
 
     if command == "gc" || command == "generate-copy"
       # replace pbcopy with equivalent Ruby clipboard functionality

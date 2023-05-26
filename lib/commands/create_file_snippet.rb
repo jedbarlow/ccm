@@ -8,10 +8,11 @@ module Commands
     DIR_OF_THIS_FILE = File.dirname(File.expand_path(__FILE__))
     CACHE_DIR = File.join(DIR_OF_THIS_FILE, "cache", "snippets")
 
-    attr_accessor :file
+    attr_accessor :file, :force_full
 
-    def initialize(file:)
+    def initialize(file:, force_full: false)
       @file = file
+      @force_full = force_full
     end
 
     def call
@@ -23,7 +24,7 @@ module Commands
     def snippet_content
       content = file_contents(file)
 
-      if content =~ /.*#{CONTEXT_MARKER}: file\W*$/
+      if force_full || content =~ /.*#{CONTEXT_MARKER}: file\W*$/
         return "```\n#{content}\n```"
       end
 

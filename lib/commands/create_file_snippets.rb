@@ -4,17 +4,19 @@ require_relative "create_file_snippet"
 
 module Commands
   class CreateFileSnippets < Command
-    attr_accessor :files
+    attr_accessor :files, :force_full_files
 
-    def initialize(files:)
+    def initialize(files:, force_full_files: [])
       @files = files
+      @force_full_files = force_full_files
     end
 
     def call
       snippets = []
       files.each do |file|
         if File.exists?(file)
-          snippets << [file, CreateFileSnippet.call(file: file)]
+          snippet = CreateFileSnippet.call(file: file, force_full: force_full_files.include?(file))
+          snippets << [file, snippet] if snippet
         else
           STDERR.puts "Context file not found: #{file}"
         end
