@@ -42,8 +42,8 @@ within a code comment and on its own line.
     you want to make.
 - Run the command `ccm` from your project root directory to list current context markers.
 - Run the command `ccm c` from your project root directory to remove all context markers (delete all
-  lines from files that contain a context marker). This is helpful if you want to quickly set up new
-  context markers for a new change.
+  lines containing a context marker). This is helpful if you want to quickly set up new context
+  markers for a new change.
 
 ### Generate a task prompt
 To generate a prompt you can copy and paste into a GPT4 chat session, use the following steps. This
