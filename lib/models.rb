@@ -52,22 +52,27 @@ class OpenAIModel
       timestamp = Time.now.strftime("%Y-%m-%d %H:%M:%S")
       @log_file.puts("#{timestamp} #{request_id} Prompt: #{prompt}")
 
-      response = @client.chat(
-        parameters: {
-          model: @model,
-          messages: [
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
-          user: "dev-tooling-experiments",
-        }
-      )
+      begin
+        response = @client.chat(
+          parameters: {
+            model: @model,
+            messages: [
+              {
+                role: "user",
+                content: prompt,
+              },
+            ],
+            user: "dev-tooling-experiments",
+          }
+        )
+      rescue => e
+        @log_file.puts("#{timestamp} #{request_id} Exception: #{e.message}")
+        next
+      end
 
       @log_file.puts("#{timestamp} #{request_id} Response: #{response.to_h}")
 
-      result = response.parsed_response["choices"][0]["message"]["content"]
+      result = response["choices"][0]["message"]["content"]
 
       return result if result.size > 0
     end
