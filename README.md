@@ -105,6 +105,8 @@ export CCM_PROJECT_DESCRIPTION="PROJECT DESCRIPTION"
   command! -nargs=1 -range=% M3ma <line1>,<line2>!ccm modify ma --model=gpt3 --stdin --quiet <args>
   command! -nargs=1 -range=% M3a  <line1>,<line2>!ccm modify a  --model=gpt3 --stdin --quiet <args>
   ```
+  These commands run the `ccm` tool from the working directory for vim, so they require that you
+  open vim from within your project's root directory.
 
 ## Development notes
 - 2023-05-25: Noticed that sometimes there are typos in the output from GPT4, for example in one
