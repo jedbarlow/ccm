@@ -68,7 +68,8 @@ def main
     output = generate_context(context_types, task, context_include: options[:context_include], quiet: options[:quiet])
 
     if command == "gc" || command == "generate-copy"
-      # replace pbcopy with equivalent Ruby clipboard functionality
+      IO.popen("pbcopy", "w") { |f| f << output }
+      puts "Output copied to clipboard."
     else
       puts output
     end
