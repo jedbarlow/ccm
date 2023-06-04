@@ -96,6 +96,7 @@ export CCM_PROJECT_DESCRIPTION="PROJECT DESCRIPTION"
 ### vim/nvim integration
 - Add the following snippet to your vim/nvim init script
   ```
+  " Code generation
   command! -nargs=1 -range=% M    <line1>,<line2>!ccm modify n  --model=gpt4 --stdin --quiet <args>
   command! -nargs=1 -range=% Mm   <line1>,<line2>!ccm modify m  --model=gpt4 --stdin --quiet <args>
   command! -nargs=1 -range=% Mma  <line1>,<line2>!ccm modify ma --model=gpt4 --stdin --quiet <args>
@@ -104,6 +105,9 @@ export CCM_PROJECT_DESCRIPTION="PROJECT DESCRIPTION"
   command! -nargs=1 -range=% M3m  <line1>,<line2>!ccm modify m  --model=gpt3 --stdin --quiet <args>
   command! -nargs=1 -range=% M3ma <line1>,<line2>!ccm modify ma --model=gpt3 --stdin --quiet <args>
   command! -nargs=1 -range=% M3a  <line1>,<line2>!ccm modify a  --model=gpt3 --stdin --quiet <args>
+
+  " Marker helpers
+  nnoremap mp OCCM CONTEXT<Esc>
   ```
   These commands run the `ccm` tool from the working directory for vim, so they require that you
   open vim from within your project's root directory.
