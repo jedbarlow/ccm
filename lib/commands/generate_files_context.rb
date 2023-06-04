@@ -32,5 +32,9 @@ module Commands
 
       files.sort.uniq
     end
+
+    def print_no_context_files_warning
+      STDERR.puts "Warning: no context files found." unless @quiet
+    end
   end
 end
