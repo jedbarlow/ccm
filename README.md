@@ -107,7 +107,7 @@ export CCM_PROJECT_DESCRIPTION="PROJECT DESCRIPTION"
   command! -nargs=1 -range=% M3a  <line1>,<line2>!ccm modify a  --model=gpt3 --stdin --quiet <args>
 
   " Marker helpers
-  nnoremap mp OCCM CONTEXT<Esc>
+  nnoremap mp OIMPORTANT CONTEXT<Esc>
   ```
   These commands run the `ccm` tool from the working directory for vim, so they require that you
   open vim from within your project's root directory.
