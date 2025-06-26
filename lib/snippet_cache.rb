@@ -21,7 +21,7 @@ class SnippetCache
 
   def get_by_hash(hash)
     cache_file = cache_file_for_hash(hash)
-    File.exists?(cache_file) ? file_contents(cache_file) : nil
+    File.exist?(cache_file) ? file_contents(cache_file) : nil
   end
 
   def cache_file_for_hash(hash)

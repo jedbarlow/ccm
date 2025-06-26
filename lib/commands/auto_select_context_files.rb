@@ -33,8 +33,17 @@ module Commands
     end
 
     def get_available_context_files
+      ignore_files = [".envrc", ".env", "README", "README.md"] + ENV.fetch("CCM_IGNORE_FILES", "").split(";")
+      ignore_dirs = [".git", "build", "builds", "log", "logs", "tmp", "storage", "node_modules", "vendor", ".context"] + ENV.fetch("CCM_IGNORE_DIRS", "").split(";")
+
       exclude = %w(.git node_modules log tmp storage spec migrate .context)
-      files = Dir.glob(["**/*.rb", "**/*.js", "**/*.erb", "**/*.yml"])
+      files = Dir.glob(["**/*.rb", "**/*.js", "**/*.erb", "**/*.yml", "**/*.csv"])
+
+      files = files.select do |f|
+        ignore_files.none? { |e| f == e } &&
+          ignore_dirs.none? { |e| f.start_with?(e) }
+      end
+
       files.select do |p|
         ps = p.split(File::SEPARATOR);
         exclude.none? { |e| ps.include?(e) }

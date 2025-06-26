@@ -15,7 +15,7 @@ module Commands
     def call
       snippets = []
       files.each do |file|
-        if File.exists?(file)
+        if File.exist?(file)
           snippet = CreateFileSnippet.call(
             file: file,
             force_full: force_full_files.include?(file),

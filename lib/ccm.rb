@@ -12,10 +12,16 @@ end
 
 def select_model(model_name)
   case model_name
+  when "gpt4o"
+    GPT4o.new
   when "gpt4"
     GPT4.new
   when "gpt3"
     GPT35.new
+  when "gemini-2.5-flash"
+    GeminiModel.new(model: "gemini-2.5-flash")
+  when "mercury-coder"
+    InceptionLabsModel.new
   else
     raise "Unknown model: #{model_name}"
   end
@@ -37,7 +43,7 @@ def main
       options[:code_stdin] = true
     end
 
-    opts.on("-mMODEL", "--model=MODEL", "Model preference (3 or 4, for GPT3.5 and GPT4); not all commands support.") do |model|
+    opts.on("-mMODEL", "--model=MODEL", "Model preference (3 or 4, 4o for GPT3.5 and GPT4 and GPT4o); not all commands support.") do |model|
       options[:model] = model
     end
 
@@ -46,7 +52,7 @@ def main
     end
   end.parse!
 
-  options[:model] ||= "gpt4"
+  options[:model] ||= "gpt4o"
 
   command = ARGV[0] || ""
   context_types = (ARGV[1] || "").downcase
@@ -65,6 +71,7 @@ def main
   when "c", "clear"
     `sed -i "" "/^.*#{CONTEXT_MARKER}.*$/d" #{Commands::ListContextFiles.call.map {|f| "\"#{f}\""}.join(" ")}`
   when "g", "gc", "generate", "generate-copy"
+    context_types = "m" if context_types.strip.empty?
     output = generate_context(context_types, task, context_include: options[:context_include], quiet: options[:quiet])
 
     if command == "gc" || command == "generate-copy"
@@ -78,19 +85,20 @@ def main
       ""
     else
       snippets = Commands::GenerateFilesContext.call(context_types: context_types, task: task, quiet: options[:quiet])
-      "\nContext files:\n#{snippets}"
+      "# Context files:\n#{snippets}\n"
     end
 
     result = select_model(options[:model]).complete(<<~PROMPT, quiet: options[:quiet])
-      Given the following context files, code, and code change task, make the specified code changes to the following code snippet. Respond with just the code, no explanations.
+      #{context}
+      Given the context files and code, make the specified changes to the following code snippet. Respond with just the code, no explanations or other text. In the case of outputing multiple files, output each file as a backtick block.
 
-      Change: #{task}
-
-      Code:
+      # Code
       ```
       #{code}
       ```
-      #{context}
+
+      # Task
+      Change: #{task}
     PROMPT
 
     puts Utils.extract_first_code_snippet(result)
